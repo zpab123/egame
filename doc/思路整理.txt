@@ -17,3 +17,17 @@
 
 第三部，启动 app
 	app.run()
+
+/////////////////////////////////////////////////////////////////////
+消息的处理
+
+有个消息转发中心， msgCenter
+
+需要处理的，就去注册，例如
+
+type Account struct {
+}
+
+Account 必须实现，消息接口
+
+msgCneter.Register(msgId, &Account)
