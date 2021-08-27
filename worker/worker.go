@@ -59,7 +59,7 @@ func Run() {
 // 工人
 type Worker struct {
 	id       uint32           // 工人id
-	jobs     []IJob           // 工作列表
+	jobs     []job.IJob       // 工作列表
 	working  syncs.AtomicBool // 是否正在工作
 	tmpjob   []IJob           // 缓存
 	jobMutex sync.Mutex       // jobs 数据锁
@@ -69,8 +69,8 @@ type Worker struct {
 func NewWorker() *Worker {
 	w := Worker{
 		id:     ids,
-		jobs:   make([]IJob, 0),
-		tmpjob: make([]IJob, 0),
+		jobs:   make([]job.IJob, 0),
+		tmpjob: make([]job.IJob, 0),
 	}
 	workers[ids] = &w
 	ids++
@@ -121,10 +121,10 @@ func (w *Worker) update() {
 }
 
 // 添加工作
-func (w *Worker) addJob(job IJob) {
-	if job != nil {
+func (w *Worker) addJob(j job.IJob) {
+	if j != nil {
 		w.jobMutex.Lock()
-		w.jobs = append(w.jobs, job)
+		w.jobs = append(w.jobs, j)
 		w.jobMutex.Unlock()
 	}
 }

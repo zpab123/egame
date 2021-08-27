@@ -8,7 +8,7 @@ package job
 
 // 工作接口
 type IJob interface {
-	Init()   // 初始化
-	Update() // 更新
-	Done()   // 是否完成
+	Init()      // 初始化
+	Update()    // 更新
+	Done() bool // 是否完成
 }
