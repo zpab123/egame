@@ -23,14 +23,14 @@ var (
 // 添加工作
 func AddJob(j job.IJob) {
 	// 如何均分分布 job ?
-	if len(workers) == 0 || job == nil {
+	if len(workers) == 0 || j == nil {
 		return
 	}
 
 	now := last % ids
 	w, ok := workers[now]
 	if ok {
-		w.addJob(job)
+		w.addJob(j)
 		last++
 	}
 }
@@ -60,9 +60,9 @@ func Run() {
 type Worker struct {
 	id       uint32           // 工人id
 	jobs     []job.IJob       // 工作列表
-	working  syncs.AtomicBool // 是否正在工作
-	tmpjob   []IJob           // 缓存
+	tmpjob   []job.IJob       // 缓存
 	jobMutex sync.Mutex       // jobs 数据锁
+	working  syncs.AtomicBool // 是否正在工作
 }
 
 // 创建一个工人
@@ -83,6 +83,8 @@ func NewWorker() *Worker {
 
 // 开始工作
 func (w *Worker) Run() {
+	w.working.Store(true)
+
 	go w.start()
 }
 
@@ -111,7 +113,7 @@ func (w *Worker) update() {
 		return
 	}
 
-	w.tmpjob = make([]IJob, ln)
+	w.tmpjob = make([]job.IJob, ln)
 	copy(w.tmpjob, w.jobs)
 	w.jobMutex.Unlock()
 

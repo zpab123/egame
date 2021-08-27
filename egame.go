@@ -28,9 +28,7 @@ func AddJob(j job.IJob) {
 
 // 启动
 func Run() {
-	for _, w := range workers {
-		w.Run()
-	}
+	worker.Run()
 
 	runing := true
 	for runing {
