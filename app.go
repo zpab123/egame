@@ -35,6 +35,9 @@ func NewApplication() *Application {
 	return &a
 }
 
+// -----------------------------------------------------------------------------
+// public
+
 // 启动 app
 func (this *Application) Run() {
 	// 设置随机种子
